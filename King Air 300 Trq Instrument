@@ -1,0 +1,37 @@
+-- Set the maximum allowable torque (100%) in Newton meters
+local max_torque = 3270
+
+-- Load images in Z-order
+img_add_fullscreen("torqueback.png")
+txt_torque = txt_add(" ", "size:34px; color: sienna; halign: right;", 72, 60, 120, 40)
+img_needle = img_add_fullscreen("needle.png")
+img_add_fullscreen("needlecap.png")
+
+-- Set image position
+rotate(img_needle, 60)
+
+-- Functions
+function new_torque(torque)
+
+    torque_120 = max_torque / 100 * 120
+    
+    trq_ndl = torque[1]
+    trq_ndl = var_cap(trq_ndl, 0, torque_120)
+
+    rotate(img_needle, 240 / torque_120 * trq_ndl + 60)
+
+    torque_text = 240 / torque_120 * trq_ndl / 2
+    txt_set(txt_torque, string.format("%.01f", torque_text) )
+    
+end
+
+function new_torque_FSX(torque)
+
+    new_torque({torque})
+    
+end
+
+-- Data bus subscribe
+xpl_dataref_subscribe("sim/cockpit2/engine/indicators/torque_n_mtr", "FLOAT[8]", new_torque)
+fsx_variable_subscribe("ENG TORQUE:1", "foot pound", new_torque_FSX)
+fs2020_variable_subscribe("ENG TORQUE:1", "foot pound", new_torque_FSX)
