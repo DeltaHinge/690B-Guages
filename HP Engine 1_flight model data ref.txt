@@ -1,0 +1,14 @@
+-- Load images in Z-order
+img_add_fullscreen("HP Face.png")
+img_needle = img_add_fullscreen("HP Needle.png")
+
+-- Functions
+function new_torque(torque)
+               
+	torque = var_cap(torque[1], 0, 3600)
+	rotate(img_needle, 240/3600 * torque)
+
+end
+
+-- Data bus subscribe
+xpl_dataref_subscribe("sim/flightmodel/engine/ENGN_TRQ", "FLOAT[8]", new_torque)
