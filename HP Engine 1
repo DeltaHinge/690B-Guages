@@ -1,0 +1,18 @@
+-- Set the maximum allowable torque (100%) in Newton meters
+max_torque = 3260
+
+-- Load images in Z-order
+img_add_fullscreen("HP Face.png")
+img_needle = img_add_fullscreen("HP Needle.png")
+
+-- Functions
+function new_torque(torque)
+               
+	torque_220 = 220/max_torque
+	
+	rotate(img_needle, torque_220 * torque[1])
+
+end
+
+-- Data bus subscribe
+xpl_dataref_subscribe("sim/cockpit2/engine/indicators/torque_n_mtr", "FLOAT[8]", new_torque)
