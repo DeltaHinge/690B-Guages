@@ -1,0 +1,21 @@
+-- Load images in Z-order
+img_add("fq_face.png", 0, 0, 500, 500)
+img_needleL = img_add("fq_needle.png", 0, 0, 500, 500)
+
+img_add("fq_face.png", 500, 0, 500, 500)
+img_needleR = img_add("fq_needle.png", 500, 0, 500, 500)
+
+
+-- Functions
+function new_fuel(fuel)
+
+    
+	rotate(img_needleL, 241.3 / 1166.89342 * fuel[1])
+
+
+        rotate(img_needleR, 241.3 / 1166.89342 * fuel[1])
+        
+end
+
+--subscriptions
+xpl_dataref_subscribe("sim/flightmodel/weight/m_fuel", "FLOAT[9]", new_fuel)
